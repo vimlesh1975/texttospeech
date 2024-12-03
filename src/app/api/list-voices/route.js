@@ -1,6 +1,8 @@
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
-const client = new TextToSpeechClient();
+const client = new TextToSpeechClient({
+  credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON),
+});
 
 export async function GET() {
   try {
