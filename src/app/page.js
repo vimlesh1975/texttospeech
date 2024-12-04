@@ -66,7 +66,7 @@ export default function Home() {
         style={{ marginBottom: '10px', width: '100%' }}
       />
 
-      <LanguageSelector setLanguage={setLanguage} language={language} />
+      <LanguageSelector setLanguage={setLanguage} language={language} setAudioUrl={setAudioUrl} />
 
       <div style={{ marginBottom: '10px' }}>
         <label>
@@ -76,7 +76,9 @@ export default function Home() {
             name="gender"
             value="MALE"
             checked={gender === 'MALE'}
-            onChange={() => setGender('MALE')}
+            onChange={() => {setGender('MALE');
+              setAudioUrl('');
+            }}
           />
           Male
           <input
@@ -84,7 +86,10 @@ export default function Home() {
             name="gender"
             value="FEMALE"
             checked={gender === 'FEMALE'}
-            onChange={() => setGender('FEMALE')}
+            onChange={() => {
+              setGender('FEMALE');
+              setAudioUrl('');
+            }}
           />
           Female
         </label>
@@ -134,7 +139,7 @@ export default function Home() {
             step="0.1"
             value={playbackSpeed}
             onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
-            style={{ width:100}}
+            style={{ width: 100 }}
           />
         </div>
       )}

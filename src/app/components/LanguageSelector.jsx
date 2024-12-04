@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-const LanguageSelector = ({ setLanguage, language }) => {
+const LanguageSelector = ({ setLanguage, language, setAudioUrl }) => {
   const [languages, setLanguages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,11 @@ const LanguageSelector = ({ setLanguage, language }) => {
       <select
         id="language-select"
         value={language}
-        onChange={(e) => setLanguage(e.target.value)}
+        onChange={(e) => {
+          setLanguage(e.target.value);
+          setAudioUrl('');
+        }
+        }
         style={{ marginLeft: '10px' }}
       >
         {languages.map((lang, index) => (
