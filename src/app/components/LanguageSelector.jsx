@@ -33,7 +33,7 @@ const LanguageSelector = ({ setLanguage, language }) => {
 
   return (
     <div style={{ marginBottom: '10px' }}>
-      <label htmlFor="language-select">Choose a language:</label>
+      <label htmlFor="language-select">Language:</label>
       <select
         id="language-select"
         value={language}
@@ -42,7 +42,7 @@ const LanguageSelector = ({ setLanguage, language }) => {
       >
         {languages.map((lang, index) => (
           <option key={index} value={lang.code}>
-            {lang.name}
+            {lang.code}
           </option>
         ))}
       </select>
