@@ -7,8 +7,7 @@ const client = new TextToSpeechClient({
 });
 
 export async function POST(request) {
-  const { text, languageCode = "mr-IN", gender = "NEUTRAL" } = await request.json();
-
+  const { text, languageCode , name} = await request.json();
   if (!text) {
     return new Response(JSON.stringify({ error: "No text provided." }), { status: 400 });
   }
@@ -19,7 +18,8 @@ export async function POST(request) {
       input: { text },
       voice: {
         languageCode,
-        ssmlGender: gender,
+        name
+        // ssmlGender: 'FEMALE',
       },
       audioConfig: {
         audioEncoding: 'MP3',

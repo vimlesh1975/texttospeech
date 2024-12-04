@@ -9,16 +9,19 @@ export async function GET() {
     const [result] = await client.listVoices({});
     const languages = result.voices.map((voice) => ({
       code: voice.languageCodes[0],
-      name: `${voice.languageCodes[0]} (${voice.name})`,
+      name: voice.name,
+      ssmlGender:voice.ssmlGender,
     }));
+    // console.log(result);
 
     // Filter unique language codes
-    const uniqueLanguages = Array.from(new Set(languages.map((lang) => lang.code))).map((code) => ({
-      code,
-      name: languages.find((lang) => lang.code === code).name,
-    }));
+    // const uniqueLanguages = Array.from(new Set(languages.map((lang) => lang.code))).map((code) => ({
+    //   code,
+    //   name: languages.find((lang) => lang.code === code).name,
+    // }));
 
-    return new Response(JSON.stringify({ languages: uniqueLanguages }), {
+    // return new Response(JSON.stringify({ languages: uniqueLanguages }), {
+      return new Response(JSON.stringify({ languages: languages }), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
