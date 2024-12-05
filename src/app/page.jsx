@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import TranslationApp from './TranslationApp'
 import TTS from "./TTS";
 
-const page = () => {
+const Page = () => {
     const [text, setText] = useState(
         `भारत आणि पोलंड यांच्यातल्या घनिष्ट राजनैतिक संबंधांना ७० वर्षे पूर्ण होत  असतांना आपली पोलंड भेट विशेष महत्वाची असेल, असं पंतप्रधान नरेंद्र मोदी यांनी म्हटलं आहे.`
     );
@@ -30,4 +30,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
