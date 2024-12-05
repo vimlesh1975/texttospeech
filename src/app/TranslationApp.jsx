@@ -54,7 +54,7 @@ const TranslationApp = ({text}) => {
 
   return (
     <div>
-      <span>Taget Language</span>
+      <span>Target Language</span>
       {languages.length > 0 ? (
         <select value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)}>
           {languages.map((lang) => (

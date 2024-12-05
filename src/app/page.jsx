@@ -10,7 +10,7 @@ const Page = () => {
     );
     return (
         <div style={{ display: 'flex' }}>
-            <div style={{border:'1px solid white'}}>
+            <div style={{border:'1px solid red'}}>
                 <textarea
                     rows="10"
                     cols="50"
@@ -23,7 +23,7 @@ const Page = () => {
                 <TTS text={text} />
             </div>
             <div style={{fontSize:100}}>{'>'}</div>
-            <div style={{border:'1px solid white'}}>
+            <div style={{border:'1px solid red'}}>
                 <TranslationApp text={text} />
             </div>
         </div>
