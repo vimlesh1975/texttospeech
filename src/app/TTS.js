@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import TranslationApp from './TranslationApp'
 
-export default function Home() {
-  const [text, setText] = useState(
-    `भारत आणि पोलंड यांच्यातल्या घनिष्ट राजनैतिक संबंधांना ७० वर्षे पूर्ण होत  असतांना आपली पोलंड भेट विशेष महत्वाची असेल, असं पंतप्रधान नरेंद्र मोदी यांनी म्हटलं आहे.`
-  );
+export default function TTS({text}) {
+ 
   const [language, setLanguage] = useState('mr-IN');
   const [name, setName] = useState('mr-IN-Standard-A');
   const [audioUrl, setAudioUrl] = useState('');
@@ -75,14 +74,7 @@ export default function Home() {
     <div style={{ padding: '20px' }}>
       <h1>Text-to-Speech</h1>
 
-      <textarea
-        rows="10"
-        cols="50"
-        placeholder="Enter text to speak..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        style={{ marginBottom: '10px' }}
-      />
+    
 
       {/* Language Selector Section */}
       <div style={{ marginBottom: '10px' }}>
