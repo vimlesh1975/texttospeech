@@ -4,7 +4,7 @@ import TTS from "./TTS";
 
 const TranslationApp = ({text}) => {
   const [translatedText, setTranslatedText] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState('en');
+  const [targetLanguage, setTargetLanguage] = useState('hi');
   const [languages, setLanguages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -54,6 +54,7 @@ const TranslationApp = ({text}) => {
 
   return (
     <div>
+      <h1>Translation</h1>
       <span>Target Language</span>
       {languages.length > 0 ? (
         <select value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)}>

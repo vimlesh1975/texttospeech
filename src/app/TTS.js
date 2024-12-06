@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import TranslationApp from './TranslationApp'
 
 export default function TTS({text}) {
  
   const [language, setLanguage] = useState('mr-IN');
-  const [name, setName] = useState('mr-IN-Standard-A');
+  const [name, setName] = useState('hi-IN-Standard-B');
   const [audioUrl, setAudioUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -71,7 +70,7 @@ export default function TTS({text}) {
   }, [playbackSpeed]);
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', border:'1px solid grey' }}>
       <h1>Text-to-Speech</h1>
 
     
