@@ -7,23 +7,50 @@ const client = new TextToSpeechClient({
 });
 
 
-
-function splitText(text, maxBytes = 4900) {
+function splitText(text, maxBytes = 4000) {
   const chunks = [];
   let currentChunk = '';
 
-  text.split(/(?<=\.)/g).forEach((sentence) => {
-    if (new TextEncoder().encode(currentChunk + sentence).length > maxBytes) {
-      chunks.push(currentChunk);
-      currentChunk = sentence;
+  // Include all common Indian sentence-ending characters
+  const sentenceDelimiterRegex = /(?<=[.?!।|।۔])\s*/g;
+
+  // Split text by sentence-ending punctuation
+  const sentences = text.split(sentenceDelimiterRegex);
+
+  sentences.forEach((sentence) => {
+    const encodedLength = new TextEncoder().encode(currentChunk + sentence).length;
+
+    if (encodedLength > maxBytes) {
+      // Add the current chunk to chunks array if it exceeds the limit
+      if (currentChunk) {
+        chunks.push(currentChunk.trim());
+        currentChunk = '';
+      }
+
+      // Handle cases where a single sentence exceeds maxBytes
+      const sentenceBytes = new TextEncoder().encode(sentence).length;
+      if (sentenceBytes > maxBytes) {
+        let remaining = sentence;
+
+        while (new TextEncoder().encode(remaining).length > maxBytes) {
+          let part = remaining.slice(0, maxBytes);
+          chunks.push(part.trim());
+          remaining = remaining.slice(maxBytes);
+        }
+
+        currentChunk = remaining;
+      } else {
+        currentChunk = sentence;
+      }
     } else {
-      currentChunk += sentence;
+      currentChunk += sentence + ' ';
     }
   });
 
-  if (currentChunk) chunks.push(currentChunk);
+  if (currentChunk.trim()) chunks.push(currentChunk.trim());
   return chunks;
 }
+
 
 export async function POST(request) {
   const { text, languageCode, name } = await request.json();
