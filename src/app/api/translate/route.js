@@ -1,10 +1,33 @@
 import { TranslationServiceClient } from '@google-cloud/translate';
-const credentials=JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
 
 const client = new TranslationServiceClient({
-  credentials
+  credentials,
 });
-// console.log(client);
+
+function splitTextForTranslation(text, maxChars = 30000) {
+  const chunks = [];
+  let currentChunk = '';
+
+  const sentenceDelimiterRegex = /(?<=[.?!।|।۔])\s*/g;
+  const sentences = text.split(sentenceDelimiterRegex);
+
+  sentences.forEach((sentence) => {
+    if ((currentChunk + sentence).length > maxChars) {
+      chunks.push(currentChunk.trim());
+      currentChunk = sentence;
+    } else {
+      currentChunk += sentence + ' ';
+    }
+  });
+
+  if (currentChunk.trim()) {
+    chunks.push(currentChunk.trim());
+  }
+
+  return chunks;
+}
 
 export async function POST(request) {
   const { text, targetLanguage } = await request.json();
@@ -14,17 +37,27 @@ export async function POST(request) {
   }
 
   try {
-    const projectId =credentials.project_id;
+    const projectId = credentials.project_id;
     const location = 'global'; // Use 'global' for non-regionalized translations
     const parent = `projects/${projectId}/locations/${location}`;
 
-    const [response] = await client.translateText({
-      contents: [text],
-      targetLanguageCode: targetLanguage,
-      parent,
-    });
+    // Split text into chunks if necessary
+    const textChunks = splitTextForTranslation(text, 30000);
 
-    const translatedText = response.translations[0].translatedText;
+    // Translate each chunk
+    const translatedChunks = await Promise.all(
+      textChunks.map(async (chunk) => {
+        const [response] = await client.translateText({
+          contents: [chunk],
+          targetLanguageCode: targetLanguage,
+          parent,
+        });
+        return response.translations[0].translatedText;
+      })
+    );
+
+    // Combine all translated chunks
+    const translatedText = translatedChunks.join(' ');
 
     return new Response(JSON.stringify({ translatedText }), {
       headers: { 'Content-Type': 'application/json' },
