@@ -6,7 +6,7 @@ const client = new TranslationServiceClient({
   credentials,
 });
 
-function splitTextForTranslation(text, maxChars = 30000) {
+function splitTextForTranslation(text, maxChars = 25000) {
   const chunks = [];
   let currentChunk = '';
 
