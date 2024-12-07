@@ -94,7 +94,7 @@ function SpeechToText() {
 
     return (<div >
         <div style={{display:'flex'}}>
-            <div>
+            <div style={{ border: '1px solid red' }}>
                 <div >
                     <h1>Speech To Text</h1>
                     <b>Languages:</b> <input style={{ width: 70 }} value={currentLanguage} onChange={e => {
