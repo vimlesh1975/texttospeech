@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import TTS from "./TTS";
+import {languagelist} from './languages'
 
 
 const TranslationApp = ({text}) => {
   const [translatedText, setTranslatedText] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('hi');
-  const [languages, setLanguages] = useState([]);
+  const [languages, setLanguages] = useState(languagelist);
   const [loading, setLoading] = useState(false);
 
   // Fetch supported languages
-  useEffect(() => {
-    const fetchLanguages = async () => {
-      try {
-        const response = await fetch('/api/languages');
-        if (!response.ok) throw new Error('Failed to fetch languages');
-        const data = await response.json();
-        setLanguages(data.languages);
-        // setTargetLanguage(data.languages[0]?.code || ''); // Default to the first language
-      } catch (error) {
-        console.error('Error fetching languages:', error);
-      }
-    };
-    fetchLanguages();
-  }, []);
+  // useEffect(() => {
+  //   const fetchLanguages = async () => {
+  //     try {
+  //       const response = await fetch('/api/languages');
+  //       if (!response.ok) throw new Error('Failed to fetch languages');
+  //       const data = await response.json();
+  //       setLanguages(data.languages);
+  //       console.log(data.languages);
+  //       // setTargetLanguage(data.languages[0]?.code || ''); // Default to the first language
+  //     } catch (error) {
+  //       console.error('Error fetching languages:', error);
+  //     }
+  //   };
+  //   fetchLanguages();
+  // }, []);
 
   const handleTranslate = async () => {
     if (!text || !targetLanguage) {
