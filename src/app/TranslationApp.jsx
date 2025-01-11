@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TTS from "./TTS";
 import { languagelist } from './languages'
 
@@ -16,13 +16,12 @@ const TranslationApp = ({ currentText, transcript }) => {
 
 
 
-  const handleTranslate = async () => {
+  // Memoize handleTranslate to prevent re-creating the function on every render
+  const handleTranslate = useCallback(async () => {
     const text = isChecked ? transcript : currentText;
 
-    console.log(transcript)
-
     if (!text || !targetLanguage) {
-      // alert('Please enter text and select a target language!');
+      console.log('returning')
       return;
     }
 
@@ -38,21 +37,23 @@ const TranslationApp = ({ currentText, transcript }) => {
         const { translatedText } = await response.json();
         setTranslatedText(translatedText);
       } else {
-        console.log('Translation failed. Please try again.');
+        alert('Translation failed. Please try again.');
       }
     } catch (error) {
       console.error('Error translating text:', error);
-      console.log('Error translating text.');
+      alert('Error translating text.');
     } finally {
       setLoading(false);
     }
-  };
-
+  }, [isChecked, targetLanguage, currentText, transcript]); // Add all dependencies
 
   useEffect(() => {
     let timer;
-
     if (isChecked) {
+
+      if (!loading) { // Skip if a previous translation is still in progress
+        handleTranslate();
+      }
       // Start the timer when the checkbox is checked
       timer = setInterval(() => {
         if (!loading) { // Skip if a previous translation is still in progress
@@ -67,7 +68,7 @@ const TranslationApp = ({ currentText, transcript }) => {
     // Cleanup the timer on component unmount or when `isChecked` changes
     return () => clearInterval(timer);
   }, [isChecked, handleTranslate]);
-  
+
   return (
     <div>
       <h1>Translation</h1>
