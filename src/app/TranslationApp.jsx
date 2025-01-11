@@ -38,11 +38,11 @@ const TranslationApp = ({ currentText, transcript }) => {
         const { translatedText } = await response.json();
         setTranslatedText(translatedText);
       } else {
-        alert('Translation failed. Please try again.');
+        console.log('Translation failed. Please try again.');
       }
     } catch (error) {
       console.error('Error translating text:', error);
-      alert('Error translating text.');
+      console.log('Error translating text.');
     } finally {
       setLoading(false);
     }
