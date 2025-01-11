@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import {list_voices} from './list-voices'
 
+const languages=list_voices;
+const languagesLoading=false;
+
 export default function TTS({text}) {
  
   const [language, setLanguage] = useState('mr-IN');
@@ -11,29 +14,7 @@ export default function TTS({text}) {
   const [loading, setLoading] = useState(false);
   const [autoPlay, setAutoPlay] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
-  const [languages, setLanguages] = useState(list_voices);
-  const [languagesLoading, setLanguagesLoading] = useState(false);
   const audioRef = useRef(null);
-
-  // Fetch languages on component mount
-  // useEffect(() => {
-  //   const fetchLanguages = async () => {
-  //     try {
-  //       const response = await fetch('/api/list-voices');
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch languages.');
-  //       }
-  //       const data = await response.json();
-  //       setLanguages(data.languages);
-  //       console.log(data.languages);
-  //     } catch (error) {
-  //       console.error('Error fetching languages:', error);
-  //     } finally {
-  //       setLanguagesLoading(false);
-  //     }
-  //   };
-  //   fetchLanguages();
-  // }, []);
 
   const handleSpeak = async () => {
     if (!text.trim()) {

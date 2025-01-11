@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import TTS from "./TTS";
-import {languagelist} from './languages'
+import { languagelist } from './languages'
 
 
-const TranslationApp = ({text}) => {
+const languages = languagelist;
+
+const TranslationApp = ({ currentText, transcript }) => {
   const [translatedText, setTranslatedText] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('hi');
-  const [languages, setLanguages] = useState(languagelist);
   const [loading, setLoading] = useState(false);
 
-  // Fetch supported languages
-  // useEffect(() => {
-  //   const fetchLanguages = async () => {
-  //     try {
-  //       const response = await fetch('/api/languages');
-  //       if (!response.ok) throw new Error('Failed to fetch languages');
-  //       const data = await response.json();
-  //       setLanguages(data.languages);
-  //       console.log(data.languages);
-  //       // setTargetLanguage(data.languages[0]?.code || ''); // Default to the first language
-  //     } catch (error) {
-  //       console.error('Error fetching languages:', error);
-  //     }
-  //   };
-  //   fetchLanguages();
-  // }, []);
+  const [isChecked, setIsChecked] = useState(false);
+
+
+
+
 
   const handleTranslate = async () => {
+    const text = isChecked ? transcript : currentText;
+
+    console.log(transcript)
+
     if (!text || !targetLanguage) {
-      alert('Please enter text and select a target language!');
+      // alert('Please enter text and select a target language!');
       return;
     }
 
@@ -54,6 +48,26 @@ const TranslationApp = ({text}) => {
     }
   };
 
+
+  useEffect(() => {
+    let timer;
+
+    if (isChecked) {
+      // Start the timer when the checkbox is checked
+      timer = setInterval(() => {
+        if (!loading) { // Skip if a previous translation is still in progress
+          handleTranslate();
+        }
+      }, 5000); // 1-second interval
+    } else {
+      // Clear the timer when the checkbox is unchecked
+      clearInterval(timer);
+    }
+
+    // Cleanup the timer on component unmount or when `isChecked` changes
+    return () => clearInterval(timer);
+  }, [isChecked, handleTranslate]);
+  
   return (
     <div>
       <h1>Translation</h1>
@@ -62,7 +76,7 @@ const TranslationApp = ({text}) => {
         <select value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)}>
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>
-              {lang.code}{lang.name?-lang.name:''}
+              {lang.code}{lang.name ? -lang.name : ''}
             </option>
           ))}
         </select>
@@ -73,16 +87,26 @@ const TranslationApp = ({text}) => {
       <button onClick={handleTranslate} disabled={loading}>
         {loading ? 'Translating...' : 'Translate'}
       </button>
+
+      <label>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={(e) => setIsChecked(e.target.checked)}
+        />
+        Auto Translate
+      </label>
+
       <br />
       <textarea
         rows="5"
         cols="50"
         value={translatedText}
         onChange={(e) => setTranslatedText(e.target.value)}
-        
+
         placeholder="Translated text will appear here..."
       />
-          { (translatedText!=='') && <TTS text={translatedText} />}
+      {(translatedText !== '') && <TTS text={translatedText} />}
 
     </div>
   );

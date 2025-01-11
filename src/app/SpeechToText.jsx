@@ -1,5 +1,5 @@
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-import { useState } from "react";
+import { useState,useEffect  } from "react";
 import TTS from "./TTS";
 import TranslationApp from './TranslationApp'
 
@@ -71,14 +71,17 @@ const languages = [
     "zh-TW",
     "bh-IN"
 ];
+
+
 function SpeechToText() {
     const { transcript, listening, resetTranscript } = useSpeechRecognition();
     const [currentLanguage, setcurrentLanguage] = useState('en-US');
     const [continuous1, setContinuous1] = useState(true);
     const [currentText, setcurrentText] = useState('Devendra Fadnavis, after taking oath as Maharashtra chief minister for the third time, addressed the media on Thursday evening and asserted that he will provide a stable government over the next five years, and the state under his leadership will see politics of change and not revenge.')
     const [replace1, setReplace1] = useState(false);
-    const setTextfromMic = (replace) => {
 
+
+    const setTextfromMic = (replace) => {
         if (replace) {
             setcurrentText(transcript);
         }
@@ -176,8 +179,9 @@ function SpeechToText() {
             </div>
             <div style={{ fontSize: 100 }}>{'>'}</div>
             <div style={{ border: '1px solid red' }}>
-                <TranslationApp text={currentText} />
+                <TranslationApp currentText={currentText} transcript={transcript} />
             </div>
+
         </div>
     </div>);
 }
